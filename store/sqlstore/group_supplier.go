@@ -270,6 +270,20 @@ func (s *SqlSupplier) GroupDeleteMember(ctx context.Context, groupID string, use
 	return result
 }
 
+func (s *SqlSupplier) GroupGetAllPageGroupTeamsForGroup(ctx context.Context, groupID string, offset int, limit int, hints ...store.LayeredStoreHint) *store.LayeredStoreSupplierResult {
+	result := store.NewSupplierResult()
+
+	var groupTeams []*model.GroupTeam
+
+	if _, err := s.GetReplica().Select(&groupTeams, "SELECT * from GroupTeams WHERE GroupId = :GroupId ORDER BY CreateAt DESC LIMIT :Limit OFFSET :Offset", map[string]interface{}{"GroupId": groupID, "Limit": limit, "Offset": offset}); err != nil {
+		result.Err = model.NewAppError("SqlGroupStore.GetAllPageGroupTeamsForGroup", "store.sql_group.get.app_error", nil, err.Error(), http.StatusInternalServerError)
+	}
+
+	result.Data = groupTeams
+
+	return result
+}
+
 func (s *SqlSupplier) GroupGetGroupTeam(ctx context.Context, groupID string, teamID string, hints ...store.LayeredStoreHint) *store.LayeredStoreSupplierResult {
 	result := store.NewSupplierResult()
 
@@ -391,6 +405,20 @@ func (s *SqlSupplier) GroupDeleteGroupTeam(ctx context.Context, groupID string, 
 	} else {
 		result.Data = groupTeam
 	}
+
+	return result
+}
+
+func (s *SqlSupplier) GroupGetAllPageGroupChannelsForGroup(ctx context.Context, groupID string, offset int, limit int, hints ...store.LayeredStoreHint) *store.LayeredStoreSupplierResult {
+	result := store.NewSupplierResult()
+
+	var groupChannels []*model.GroupChannel
+
+	if _, err := s.GetReplica().Select(&groupChannels, "SELECT * from GroupChannels WHERE GroupId = :GroupId ORDER BY CreateAt DESC LIMIT :Limit OFFSET :Offset", map[string]interface{}{"GroupId": groupID, "Limit": limit, "Offset": offset}); err != nil {
+		result.Err = model.NewAppError("SqlGroupStore.GetAllPageGroupChannelsForGroup", "store.sql_group.get.app_error", nil, err.Error(), http.StatusInternalServerError)
+	}
+
+	result.Data = groupChannels
 
 	return result
 }

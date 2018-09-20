@@ -23,10 +23,12 @@ func TestGroupStore(t *testing.T, ss store.Store) {
 	t.Run("DeleteMember", func(t *testing.T) { testGroupDeleteMember(t, ss) })
 
 	t.Run("GetGroupTeam", func(t *testing.T) { testGetGroupTeam(t, ss) })
+	t.Run("GetAllPageGroupTeamsForGroup", func(t *testing.T) { testGetAllPageGroupTeamsForGroup(t, ss) })
 	t.Run("SaveGroupTeam", func(t *testing.T) { testSaveGroupTeam(t, ss) })
 	t.Run("DeleteGroupTeam", func(t *testing.T) { testDeleteGroupTeam(t, ss) })
 
 	t.Run("GetGroupChannel", func(t *testing.T) { testGetGroupChannel(t, ss) })
+	t.Run("GetAllPageGroupChannelsForGroup", func(t *testing.T) { testGetAllPageGroupChannelsForGroup(t, ss) })
 	t.Run("SaveGroupChannel", func(t *testing.T) { testSaveGroupChannel(t, ss) })
 	t.Run("DeleteGroupChannel", func(t *testing.T) { testDeleteGroupChannel(t, ss) })
 }
@@ -447,6 +449,10 @@ func testGetGroupTeam(t *testing.T, ss store.Store) {
 	assert.Zero(t, gt1.DeleteAt)
 }
 
+func testGetAllPageGroupTeamsForGroup(t *testing.T, ss store.Store) {
+
+}
+
 func testSaveGroupTeam(t *testing.T, ss store.Store) {
 	// Invalid TeamID
 	res1 := <-ss.Group().SaveGroupTeam(&model.GroupTeam{
@@ -711,6 +717,10 @@ func testGetGroupChannel(t *testing.T, ss store.Store) {
 	assert.NotZero(t, gc1.CreateAt)
 	assert.NotZero(t, gc1.UpdateAt)
 	assert.Zero(t, gc1.DeleteAt)
+}
+
+func testGetAllPageGroupChannelsForGroup(t *testing.T, ss store.Store) {
+
 }
 
 func testSaveGroupChannel(t *testing.T, ss store.Store) {
