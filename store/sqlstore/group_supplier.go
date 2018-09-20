@@ -320,6 +320,11 @@ func (s *SqlSupplier) GroupSaveGroupTeam(ctx context.Context, groupTeam *model.G
 		}
 	} else {
 
+		// No update required
+		if (retrievedGroupTeam.AutoAdd == groupTeam.AutoAdd) && (retrievedGroupTeam.CanLeave == groupTeam.CanLeave) {
+			result.Err = model.NewAppError("SqlGroupStore.SaveGroupTeam", "store.sql_group.save_group_team.save.no_changes", nil, "group_id="+groupTeam.GroupId+", team_id="+groupTeam.TeamId, http.StatusInternalServerError)
+		}
+
 		// Reset these properties, don't update them based on input
 		groupTeam.DeleteAt = retrievedGroupTeam.DeleteAt
 		groupTeam.CreateAt = retrievedGroupTeam.CreateAt
@@ -439,6 +444,11 @@ func (s *SqlSupplier) GroupSaveGroupChannel(ctx context.Context, groupChannel *m
 			return result
 		}
 	} else {
+
+		// No update required
+		if (retrievedGroupChannel.AutoAdd == groupChannel.AutoAdd) && (retrievedGroupChannel.CanLeave == groupChannel.CanLeave) {
+			result.Err = model.NewAppError("SqlGroupStore.SaveGroupChannel", "store.sql_group.save_group_channel.save.no_changes", nil, "group_id="+groupChannel.GroupId+", team_id="+groupChannel.ChannelId, http.StatusInternalServerError)
+		}
 
 		// Reset these properties, don't update them based on input
 		groupChannel.DeleteAt = retrievedGroupChannel.DeleteAt

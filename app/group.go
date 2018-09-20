@@ -77,10 +77,6 @@ func (a *App) GetGroupTeam(groupID string, teamID string) (*model.GroupTeam, *mo
 }
 
 func (a *App) CreateGroupTeam(groupTeam *model.GroupTeam) (*model.GroupTeam, *model.AppError) {
-	// Clear any user-provided values for trusted properties.
-	groupTeam.CreateAt = 0
-	groupTeam.UpdateAt = 0
-	groupTeam.DeleteAt = 0
 	result := <-a.Srv.Store.Group().SaveGroupTeam(groupTeam)
 	if result.Err != nil {
 		return nil, result.Err
@@ -105,10 +101,6 @@ func (a *App) GetGroupChannel(groupID string, channelID string) (*model.GroupCha
 }
 
 func (a *App) CreateGroupChannel(groupChannel *model.GroupChannel) (*model.GroupChannel, *model.AppError) {
-	// Clear any user-provided values for trusted properties.
-	groupChannel.CreateAt = 0
-	groupChannel.UpdateAt = 0
-	groupChannel.DeleteAt = 0
 	result := <-a.Srv.Store.Group().SaveGroupChannel(groupChannel)
 	if result.Err != nil {
 		return nil, result.Err

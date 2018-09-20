@@ -399,6 +399,7 @@ func (me *TestHelper) CreateGroup() *model.Group {
 		Name:        "name" + id,
 		Type:        model.GroupTypeLdap,
 		Description: "description_" + id,
+		Props:       model.GroupProps{},
 	}
 
 	utils.DisableDebugLogForTest()
